@@ -25,4 +25,7 @@ From within WinDBG
      
      .load pykd
      !py heappy <heapsize> log=<on/off> 
+     
+     # Example
+     !py heappo 0x40 log=on
    
