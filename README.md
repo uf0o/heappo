@@ -30,3 +30,7 @@ From within WinDBG
      # Example
      !py heappo 0x40 log=on
    
+   
+## Credits
+
+Greatly inspired by Sam Brown [project](https://labs.f-secure.com/archive/heap-tracing-with-windbg-and-python)
