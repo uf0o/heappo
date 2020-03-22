@@ -1,1 +1,28 @@
-# pykd_extensions-heappo-
+# Heappo
+
+**Heappo** is a PyKD based extensions for WinDBG which aids Heap Exploitation by logging the followings:
+
+## Features
+
+- Tracing:
+  *RtlAllocateHeap
+  *RtlReAllocateHeap
+  *RtlFreeHeap
+
+- Paramenters
+  *Custom allocation size
+
+## Requirements 
+
+* Python2.7 OR Python3.6 x64 
+* PyKD x64/32
+* WinDbg :)
+
+
+## Installation and Setup 
+
+From within WinDBG
+     ```
+     .load pykd
+     !py heappy <heapsize> log=<on/off> 
+     ```
