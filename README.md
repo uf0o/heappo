@@ -4,12 +4,12 @@
 
 ## Features
 
-- Tracing:
+### Tracing:
   *RtlAllocateHeap
   *RtlReAllocateHeap
   *RtlFreeHeap
 
-- Paramenters
+### Paramenters
   *Custom allocation size
 
 ## Requirements 
