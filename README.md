@@ -22,8 +22,7 @@
 ## Installation and Setup 
 
 From within WinDBG
-
-     ```
+     
      .load pykd
      !py heappy <heapsize> log=<on/off> 
-     ```
+   
