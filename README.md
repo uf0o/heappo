@@ -4,6 +4,8 @@
 
 ## Features
 
+Runs on both Py2/Py3 and x86/x64
+
 ### Tracing:
   * RtlAllocateHeap
   * RtlReAllocateHeap
@@ -15,19 +17,17 @@
   * External log file
 
 ### To do:
-* Add VirtualAlloc
+* ~~Add VirtualAlloc~~
 * Group functions by same usr-ptr (and possibly same return pointer/caller)
 * Log file in mona format (need to check the specs)
 
 ## Requirements 
-
 * Python2.7 OR Python3.6 x64 
 * PyKD x64/32
 * WinDbg :)
 
 
 ## Installation and Setup 
-
 From within WinDBG
      
      .load pykd
