@@ -8,6 +8,7 @@
   * RtlAllocateHeap
   * RtlReAllocateHeap
   * RtlFreeHeap
+  * VirtualAlloc
 
 ### Paramenters
   * Custom allocation size
