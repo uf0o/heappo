@@ -31,7 +31,7 @@ Runs on both Py2/Py3 and x86/x64
 From within WinDBG
      
      .load pykd
-     !py heappo.py <heapsize> log=<on/off> 
+     !py heappo.py <heap_alloc_size> log=<on/off> 
      
      # Example
      !py heappo.py 0x40 log=on
