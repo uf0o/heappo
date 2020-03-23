@@ -13,6 +13,11 @@
   * Custom allocation size
   * External log file
 
+### To do:
+* Add VirtualAlloc
+* Group functions by same usr-ptr (and possibly same return pointer/caller)
+* Log file in mona format (need to check the specs)
+
 ## Requirements 
 
 * Python2.7 OR Python3.6 x64 
