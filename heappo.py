@@ -222,9 +222,11 @@ class handle_virtual_alloc(pykd.eventHandler):
 def usage():
     print("(*) # from withing WinDBG #")
     print("(*) .load pykd")
-    print("(*) !py heappo <heapsize/\"null\"> log=<on/off> \n\n")
+    print("(*) !py heappo <heap_alloc_size> log=<on/off> \n\n")
     print("(*) Example:\n")
     print("(*) !py heappo 0x40 log=on")
+    print("(*) To log any allocation just set heap_alloc_size as 'null'")
+    
 
 if len(sys.argv) < 3:
     usage()
