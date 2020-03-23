@@ -2,8 +2,6 @@
 # !py c:\users\matteo\desktop\heappo.py 0x40 log=on
 
 # to do:
-
-# add VirtualAlloc
 # Group functions by same usr-ptr (and same return pointer?)
 # Log file in mona format (need to check the specs)
 
@@ -175,14 +173,6 @@ class handle_realloc_heap(pykd.eventHandler):
                 log.write(self.out + "\n")
             return False
 
-def usage():
-    print("(*) # from withing WinDBG #")
-    print("(*) .load pykd")
-    print("(*) !py heappo <heapsize/\"null\"> log=<on/off> \n\n")
-    print("(*) Example:\n")
-    print("(*) !py heappo 0x40 log=on")
-    
-
 #VirtualAlloc(
 #    LPVOID lpAddress,
 #    SIZE_T dwSize,
@@ -192,22 +182,18 @@ def usage():
         
 class handle_virtual_alloc(pykd.eventHandler):
     def __init__(self):
-        addr = format64(get_address("kernelbase!virtualalloc"))
+        addr = format64(get_address("kernel32!VirtualAlloc"))
         if addr == None:
             return
         self.bp_init = pykd.setBp(int(addr, 16), self.enter_call_back)
         self.bp_end = None
         
     def enter_call_back(self):
-        self.condition = False
-        #current_alloc_size = (hex(pykd.ptrMWord(pykd.reg("esp") + 0x8))).replace('L','')        
-        #if (current_alloc_size == alloc_size) or "null" in alloc_size: 
-        self.condition = True
         self.out = "VirtualAlloc("
         if arch_bits == 32:
             esp = pykd.reg(stack_pointer)
             self.out += hex(pykd.ptrPtr(esp + 4)) + " , "
-            self.out += hex(pykd.size(esp + 0x8)) + " , "
+            self.out += hex(pykd.ptrMWord(esp + 0x8)) + " , "
             self.out += hex(pykd.ptrMWord(esp + 0xC)) + " , " 
             self.out += hex(pykd.ptrMWord(esp + 0x10)) + ") = "
         else:
@@ -216,7 +202,7 @@ class handle_virtual_alloc(pykd.eventHandler):
             self.out += hex(pykd.reg("r8")) + " , " 
             self.out += hex(pykd.reg("r9")) + ") = "
         if self.bp_end == None:
-            disas = pykd.dbgCommand("uf ntdll!RtlReAllocateHeap").split('\n')
+            disas = pykd.dbgCommand("uf kernelbase!VirtualAlloc").split('\n')
             for i in disas:
                 if 'ret' in i:
                     self.ret_addr = format64(i.split()[0])
@@ -225,14 +211,20 @@ class handle_virtual_alloc(pykd.eventHandler):
         return False
             
     def return_call_back(self):
-        if self.condition:
-            esp = pykd.reg(stack_pointer)
-            self.out += hex(pykd.reg(return_reg))
-            self.out += " - From: " + (hex(pykd.ptrPtr(esp))).replace('L','')
-            print(self.out)
-            if logging:
-                log.write(self.out + "\n")
-            return False
+        esp = pykd.reg(stack_pointer)
+        self.out += hex(pykd.reg(return_reg))
+        self.out += " - From: " + (hex(pykd.ptrPtr(esp))).replace('L','')
+        print(self.out)
+        if logging:
+            log.write(self.out + "\n")
+        return False
+
+def usage():
+    print("(*) # from withing WinDBG #")
+    print("(*) .load pykd")
+    print("(*) !py heappo <heapsize/\"null\"> log=<on/off> \n\n")
+    print("(*) Example:\n")
+    print("(*) !py heappo 0x40 log=on")
 
 if len(sys.argv) < 3:
     usage()
@@ -256,5 +248,6 @@ except:
 handle_allocate_heap()
 handle_free_heap()
 handle_realloc_heap()
+handle_virtual_alloc()
 pykd.go()
     
