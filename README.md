@@ -1,6 +1,6 @@
 # Heappo
 
-**Heappo** is a PyKD based extensions for WinDBG which aids Heap Exploitation by logging the followings:
+**Heappo** 🦛 is a PyKD based extensions for WinDBG which aids Heap Exploitation by logging the followings:
 
 ## Features
 
