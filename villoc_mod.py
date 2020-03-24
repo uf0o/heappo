@@ -222,7 +222,7 @@ def sanitize(x):
 
 def parse_ltrace(ltrace):
 
-    match_call = re.compile(r"^([a-zA-Z_]+)\((.*)\) += (.*) +From: (.*)")
+    match_call = re.compile(r"^([0-9-:.... ]+), ([a-zA-Z_]+)\((.*)\) += (.*)- +From: (.*)")
     match_err = re.compile(r"^([a-zA-Z_]+)\((.*) <no return \.\.\.>")
 
     for line in ltrace:
@@ -232,11 +232,12 @@ def parse_ltrace(ltrace):
         if head.isdigit():
             line = tail
 
-        if not any(line.startswith(f) for f in operations):
-            continue
+        #if not any(line.startswith(f) for f in operations):
+        #    print("skipping")
+        #    continue
 
         try:
-            func, args, ret, caller = match_call.findall(line)[0]
+            timestamp,func, args, ret, caller = match_call.findall(line)[0]
         except Exception:
 
             try:
@@ -252,7 +253,7 @@ def parse_ltrace(ltrace):
         args = map(sanitize, args.split(", "))
         ret = sanitize(ret)
 
-        yield func, args, ret, caller
+        yield timestamp, func, args, ret, caller
 
 
 def build_timeline(events):
@@ -260,7 +261,7 @@ def build_timeline(events):
     boundaries = set()
     timeline = [State()]
 
-    for func, args, ret, caller in events:
+    for timestamp, func, args, ret, caller in events:
 
         try:
             op = operations[func]
@@ -273,7 +274,7 @@ def build_timeline(events):
         if ret is None:
             state.errors.append("%s = <error>" % call)
         else:
-            state.info.append("%s = %#x From: %s" % (call, ret,caller))
+            state.info.append("%s - %s = %#x From: %s" % (timestamp, call, ret,caller))
 
         op(state, ret, *args)
         boundaries.update(state.boundaries())
