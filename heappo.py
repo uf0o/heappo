@@ -6,6 +6,7 @@
 # Log file in mona format (need to check the specs)
 
 import pykd
+import datetime
 from os.path import expanduser
 
 home = expanduser("~")
@@ -42,10 +43,12 @@ class handle_allocate_heap(pykd.eventHandler):
         
     def enter_call_back(self):
         self.condition = False
+        time = datetime.datetime.now()
         current_alloc_size = (hex(pykd.ptrMWord(pykd.reg("esp") + 0xC))).replace('L','')        
         if (current_alloc_size == alloc_size) or "null" in alloc_size: 
             self.condition = True
-            self.out = "RtlAllocateHeap(" 
+            self.out = str(time)
+            self.out += ", RtlAllocateHeap(" 
             if arch_bits == 32:
                 esp = pykd.reg("esp")
                 self.out += hex(pykd.ptrPtr(esp + 4)) + " , "
@@ -88,11 +91,13 @@ class handle_free_heap(pykd.eventHandler):
         
     def enter_call_back(self):
         self.condition = False
+        time = datetime.datetime.now()
         current_free_size = (hex(pykd.ptrMWord(pykd.reg("esp") + 0xC))).replace('L','')
         # logging everything except Free[0] 
         if (current_free_size != "0x0"):
             self.condition = True
-            self.out = "RtlFreeHeap("
+            self.out = str(time)
+            self.out += ", RtlFreeHeap("
             if arch_bits == 32:
                 esp = pykd.reg(stack_pointer)
                 self.out += hex(pykd.ptrPtr(esp + 4)) + " , "
@@ -139,10 +144,12 @@ class handle_realloc_heap(pykd.eventHandler):
         
     def enter_call_back(self):
         self.condition = False
+        time = datetime.datetime.now()
         current_alloc_size = (hex(pykd.ptrMWord(pykd.reg("esp") + 0x10))).replace('L','')        
         if (current_alloc_size == alloc_size) or "null" in alloc_size: 
             self.condition = True
-            self.out = "RtlReAllocateHeap("
+            self.out = str(time)
+            self.out += ", RtlReAllocateHeap("
             if arch_bits == 32:
                 esp = pykd.reg(stack_pointer)
                 self.out += hex(pykd.ptrPtr(esp + 4)) + " , "
@@ -189,7 +196,9 @@ class handle_virtual_alloc(pykd.eventHandler):
         self.bp_end = None
         
     def enter_call_back(self):
-        self.out = "VirtualAlloc("
+        time = datetime.datetime.now()
+        self.out = str(time)
+        self.out += ", VirtualAlloc("
         if arch_bits == 32:
             esp = pykd.reg(stack_pointer)
             self.out += hex(pykd.ptrPtr(esp + 4)) + " , "
