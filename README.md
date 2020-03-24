@@ -5,6 +5,7 @@
 ## Features
 
 Runs on both Py2/Py3 and x86/x64
+Timestamps :)
 
 ### Tracing:
   * RtlAllocateHeap
