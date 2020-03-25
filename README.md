@@ -2,6 +2,7 @@
 
 **Heappo** 🦛 is a PyKD based extensions for WinDBG which aids Heap Exploitation by logging the followings:
 
+Tutorial and background [here](https://www.matteomalvica.com/blog/2020/03/24/heappo-windbg-heap-tracing/)
 ## Features
 
 Runs on both Py2/Py3 and x86/x64
@@ -57,7 +58,7 @@ From within WinDBG
 
 ## Sample Graph
 
-![GitHub Logo](/demo.png)
+![demo](/demo.png)
    
 ## Credits
 
