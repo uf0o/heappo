@@ -54,7 +54,13 @@ From within WinDBG
 2020-03-25 09:26:17.048000, RtlAllocateHeap(0x5c0000L , 0x0L , 0x40L) = 0x6435c8 - From: 0x7124b36e
 2020-03-25 09:26:27.204000, RtlAllocateHeap(0x5c0000L , 0x0L , 0x40L) = 0x642a40 - From: 0x761c0636
 ```
+
+## Sample Graph
+
+![GitHub Logo](/demo.png)
    
 ## Credits
 
 Greatly inspired by Sam Brown [project](https://labs.f-secure.com/archive/heap-tracing-with-windbg-and-python)
+
+
